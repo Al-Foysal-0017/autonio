@@ -1,7 +1,6 @@
 /* FOR NAVBAR PART */
 .navbarContainer {
   display: flex;
-  /* background: red; */
   color: #fff;
 }
 .navbarContainerWrapper {
@@ -20,9 +19,7 @@
   padding: 0;
 }
 .navbarContainerLogo {
-  padding: 0 20px;
-  font-size: 28px;
-  font-weight: bolder;
+  padding: 0 10px;
 }
 .navbarContainerRight {
   padding: 0;
@@ -46,7 +43,7 @@
 .setSidebarForToggle {
   position: fixed;
   height: 100vh;
-  width: 320px;
+  width: 300px;
   /* overflow-y: scroll; */
   top: 0;
   left: 0;
@@ -61,6 +58,7 @@
 .mobileSidebarTop {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .SidebarToggleBtn {
   border: none;
