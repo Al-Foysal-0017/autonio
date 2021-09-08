@@ -1,18 +1,214 @@
 import { useState } from "react";
-// import { NavLink } from "react-router-dom";
 import { Squash as Hamburger } from "hamburger-react";
 import "./SidebarMobile.module.css";
-import { navRoutes } from "./SidebarMobileRoute";
 import Logo from "../../assets/img/LogoMobile.svg";
-// import { GiSplitCross } from "react-icons/gi";
-import { IoLanguage } from "react-icons/io5";
-import { CgDarkMode } from "react-icons/cg";
-import { FiFileText, FiLogOut } from "react-icons/fi";
 import LogoIcon from "../../assets/img/icons/logo.svg";
-// import profileImg from "../../assets/img/profileImg.svg";
+import { firstRoutes, secondRoutes, lastRoutes } from "../../routes";
+import React, { useEffect } from "react";
+import Link from "next/link";
+import { useRouter, withRouter } from "next/router";
+// nodejs library that concatenates classes
+import classnames from "classnames";
+// nodejs library to set properties for components
+import { PropTypes } from "prop-types";
+// react library that creates nice scrollbar on windows devices
+import PerfectScrollbar from "react-perfect-scrollbar";
+// reactstrap components
+import {
+  Collapse,
+  NavbarBrand,
+  Navbar,
+  NavItem,
+  NavLink,
+  Nav,
+  Button,
+} from "reactstrap";
+import { PrimaryButton, DefaultButton } from "../Buttons";
+import styled from "styled-components";
+import Typography from "../Typography";
 
-const MobileNav = () => {
+import LanguageIcon from "../../assets/img/icons/language.svg";
+import ModeIcon from "../../assets/img/icons/theme.svg";
+import DocumentIcon from "../../assets/img/icons/documents.svg";
+import LogoutIcon from "../../assets/img/icons/log_out.svg";
+import DropdownIcon from "../../assets/img/icons/dropdown.svg";
+import CopyIcon from "../../assets/img/icons/copy.svg";
+import Switch from "react-switch";
+import WalletModal from "../WalletModal";
+import { useUser } from "contexts/UserContext";
+import { useWeb3React } from "@web3-react/core";
+import { formatAddress } from "../../utils/formatters";
+import { IconButton } from "@material-ui/core";
+import { useTheme } from "../../contexts/ThemeContext";
+import { getCurrentTier } from "../../utils/ethereum";
+import { stakingPlans } from "../../utils/constants";
+
+const TopBar = styled.div`
+  border-bottom: ${({ darkMode }) =>
+    darkMode ? "1px solid #2f3641" : "1px solid #F5F5F5"};
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 16px;
+`;
+
+const InnerNavBar = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: ${({ logged }) =>
+    logged ? "calc(100% - 161px)" : "calc(100% - 120px)"};
+`;
+
+const DisableLabelWrapper = styled.div`
+  background: ${({ theme }) => theme.color.monoGrey2};
+  padding: 2px 4px;
+  color: ${({ theme }) => theme.color.monoGrey4};
+  border-radius: 10px;
+  font-size: 10px;
+`;
+const DropdownMenu = ({ menus }) => (
+  <div className="d-flex justify-content-between w-100">
+    <Typography color="monoWhite" size={14}>
+      {menus[0]}
+    </Typography>
+    <DropdownIcon className="ml-2" />
+  </div>
+);
+
+const MobileNav = ({ rtlActive, router }) => {
   const [openSidebar, setOpenSidebar] = useState(false);
+  const [openWalletModal, setOpenWalletModal] = useState(false);
+  const { account, library, disconnect } = useUser();
+  const { darkMode, setDarkMode } = useTheme();
+  const [currentTier, setCurrentTier] = useState(0);
+  const nextRouter = useRouter();
+
+  useEffect(() => {
+    if (!account || !library) return;
+
+    const loadInfo = async () => {
+      const currentTier = await getCurrentTier(null, account, library);
+
+      setCurrentTier(currentTier);
+    };
+
+    loadInfo();
+  }, [account, library]);
+
+  const activeRoute = (routeName) => {
+    // if (routeName === "/") return router.pathname === "/" ? "active" : "";
+    // return router.pathname.indexOf(routeName) > -1 ? "active" : "";
+  };
+
+  const openExternalLink = (path) => {
+    window.open(path, "_blank");
+  };
+
+  // this function creates the links and collapses that appear in the sidebar (left menu)
+  const createLinks = (routes, disabled) => {
+    return routes.map((prop, key) => (
+      <NavItem className={activeRoute(prop.layout + prop.path)} key={key}>
+        {prop.isExternal ? (
+          <NavLink
+            className={`d-flex justify-content-between ${activeRoute(
+              prop.layout + prop.path
+            )}`}
+            disabled={disabled}
+            onClick={() => openExternalLink(prop.path)}
+          >
+            <div>
+              {prop.icon}
+              <span className="nav-link-text ml-3">{prop.name}</span>
+            </div>
+            {disabled && <DisableLabelWrapper>Soon</DisableLabelWrapper>}
+          </NavLink>
+        ) : (
+          <Link
+            href={prop.isExternal ? prop.path : prop.layout + prop.path}
+            passHref={prop.isExternal}
+          >
+            <NavLink
+              className={`d-flex justify-content-between ${activeRoute(
+                prop.layout + prop.path
+              )}`}
+              disabled={disabled}
+            >
+              <div>
+                {prop.icon}
+                <span className="nav-link-text ml-3">{prop.name}</span>
+              </div>
+              {disabled && <DisableLabelWrapper>Soon</DisableLabelWrapper>}
+            </NavLink>
+          </Link>
+        )}
+      </NavItem>
+    ));
+  };
+
+  const LogOutMenu = () => (
+    <NavItem className="mb-4 activated">
+      <NavLink onClick={disconnect}>
+        <LogoutIcon className="mr-3" />
+        <span className="nav-link-text">Log Out</span>
+      </NavLink>
+    </NavItem>
+  );
+
+  const LanguageMenu = () => (
+    <NavItem className="activated">
+      <NavLink>
+        <div className="d-flex justify-content-between w-100">
+          <LanguageIcon className="mr-3" />
+          <DropdownMenu menus={["English"]} />
+          {/* <span className="nav-link-text">Lout out</span> */}
+        </div>
+      </NavLink>
+    </NavItem>
+  );
+
+  const ModeMenu = () => (
+    <NavItem className="activated">
+      <NavLink>
+        <div className="d-flex justify-content-between w-100">
+          <div>
+            <ModeIcon className="mr-3" />
+            <span className="nav-link-text">Dark mode</span>
+          </div>
+          <Switch
+            onChange={setDarkMode}
+            checked={darkMode}
+            onColor="#507869"
+            onHandleColor="#27C29D"
+            handleDiameter={22}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            // activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            height={15}
+            width={38}
+            className="react-switch"
+            id="material-switch"
+          />
+        </div>
+      </NavLink>
+    </NavItem>
+  );
+
+  const DocumentationMenu = () => (
+    <NavItem className="activated">
+      <NavLink
+        onClick={() =>
+          openExternalLink(
+            "https://app.gitbook.com/@autonio/s/autonio-foundation"
+          )
+        }
+      >
+        <DocumentIcon className="mr-3" />
+        <span className="nav-link-text">Documentation</span>
+      </NavLink>
+    </NavItem>
+  );
+
   return (
     <header className="navbarAndSidebar" style={{ marginBottom: "25px" }}>
       {/* NAVBAR PART */}
@@ -57,30 +253,27 @@ const MobileNav = () => {
             />
           </div>
           <div className="SidebarItems">
-            {navRoutes.map((item) => (
-              <div key={item.name} className="SidebarItem">
-                {item.name}
-              </div>
-            ))}
+            <div className="navbar-first">
+              <Nav navbar>{createLinks(firstRoutes)}</Nav>
+              <Nav navbar>{createLinks(secondRoutes, true)}</Nav>
+            </div>
           </div>
         </div>
         <div className="mobileSidebarBottom">
-          <div className="mobileSidebarBottomItem">
-            <IoLanguage className="languageIcon" /> <span>English</span>
-          </div>
-          <div className="mobileSidebarBottomItem">
-            <CgDarkMode className="languageIcon" /> <span>Dark Mode</span>
-          </div>
-          <div className="mobileSidebarBottomItem">
-            <FiFileText className="languageIcon" /> <span>Documentation</span>
-          </div>
-          <div className="mobileSidebarBottomLogout">
-            <FiLogOut className="languageIcon" /> Log out
-          </div>
-          <div className="mobileSidebarBottomLogo">
-            <LogoIcon />
-          </div>
-          <div className="mobileSidebarBottomVersion">version 2.0</div>
+          <Nav navbar>
+            <LanguageMenu />
+            <ModeMenu />
+            <DocumentationMenu />
+            <div className="mt-6" />
+
+            {account && <LogOutMenu />}
+            <div className="px-4">
+              <LogoIcon />
+              <Typography color="textGrey" size={10} className="mt-4">
+                Version 2.0
+              </Typography>
+            </div>
+          </Nav>
         </div>
       </div>
     </header>
