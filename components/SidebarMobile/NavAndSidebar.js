@@ -5,6 +5,9 @@ import "./SidebarMobile.module.css";
 import { navRoutes } from "./SidebarMobileRoute";
 import Logo from "../../assets/img/LogoMobile.svg";
 // import { GiSplitCross } from "react-icons/gi";
+import { IoLanguage } from "react-icons/io5";
+import { CgDarkMode } from "react-icons/cg";
+import { FiFileText, FiLogOut } from "react-icons/fi";
 import LogoIcon from "../../assets/img/icons/logo.svg";
 // import profileImg from "../../assets/img/profileImg.svg";
 
@@ -62,12 +65,19 @@ const MobileNav = () => {
             ))}
           </div>
         </div>
-
         <div className="mobileSidebarBottom">
-          <div className="mobileSidebarBottomItem">English</div>
-          <div className="mobileSidebarBottomItem">Dark Mode</div>
-          <div className="mobileSidebarBottomItem">Documentation</div>
-          <div className="mobileSidebarBottomLogout">Log out</div>
+          <div className="mobileSidebarBottomItem">
+            <IoLanguage className="languageIcon" /> <span>English</span>
+          </div>
+          <div className="mobileSidebarBottomItem">
+            <CgDarkMode className="languageIcon" /> <span>Dark Mode</span>
+          </div>
+          <div className="mobileSidebarBottomItem">
+            <FiFileText className="languageIcon" /> <span>Documentation</span>
+          </div>
+          <div className="mobileSidebarBottomLogout">
+            <FiLogOut className="languageIcon" /> Log out
+          </div>
           <div className="mobileSidebarBottomLogo">
             <LogoIcon />
           </div>

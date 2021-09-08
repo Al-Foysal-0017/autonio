@@ -96,12 +96,19 @@
   margin-top: 80px;
 }
 .mobileSidebarBottomItem {
-  padding: 5px 0;
+  padding: 7px 0;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+.languageIcon {
+  margin-right: 10px;
+  height: 20px;
+  width: 20px;
 }
 .mobileSidebarBottomLogout {
   font-size: 14px;
-  padding-top: 12px;
+  padding-top: 18px;
 }
 .mobileSidebarBottomLogo {
   padding: 30px 0 0 0;
