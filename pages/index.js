@@ -220,18 +220,20 @@ const OverviewPage = () => {
 
       <div className="py-4">
         <Row>
-          <Col lg={3}>
-            <AvailableCard blockNumber={blockNumber} />
-          </Col>
-          <Col lg={3}>
-            <LockedCard blockNumber={blockNumber} />
-          </Col>
-          <Col lg={3}>
-            <StakingRewardsCard blockNumber={blockNumber} />
-          </Col>
-          <Col lg={3}>
-            <TokenCard blockNumber={blockNumber} />
-          </Col>
+          <div style={{ display: "flex", width: "100%" }}>
+            <Col lg={3} style={{ minWidth: "250px" }}>
+              <AvailableCard blockNumber={blockNumber} />
+            </Col>
+            <Col lg={3} style={{ minWidth: "250px" }}>
+              <LockedCard blockNumber={blockNumber} />
+            </Col>
+            <Col lg={3} style={{ minWidth: "250px" }}>
+              <StakingRewardsCard blockNumber={blockNumber} />
+            </Col>
+            <Col lg={3} style={{ minWidth: "250px" }}>
+              <TokenCard blockNumber={blockNumber} />
+            </Col>
+          </div>
         </Row>
       </div>
       <Row>

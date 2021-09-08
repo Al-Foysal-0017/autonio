@@ -13,7 +13,6 @@ import LogoIcon from "../../assets/img/icons/logo.svg";
 
 const MobileNav = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
-
   return (
     <header className="navbarAndSidebar" style={{ marginBottom: "25px" }}>
       {/* NAVBAR PART */}
