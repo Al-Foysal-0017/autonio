@@ -169,9 +169,6 @@
 }
 /* It is for sidebar component */
 @media (max-width: 1024px) {
-  .responsiveSidebar {
-    display: none;
-  }
   .ResponsiveScrollBar1 {
     display: none;
   }
@@ -181,3 +178,16 @@
     display: none;
   }
 }
+/* @media (max-width: 768px) {
+  .responsiveSidebar {
+    display: none;
+  }
+  .ResponsiveScrollBar1 {
+    display: none;
+  }
+}
+@media (min-width: 769px) {
+  .ResponsiveScrollBar2 {
+    display: none;
+  }
+} */

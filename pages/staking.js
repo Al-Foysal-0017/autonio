@@ -52,6 +52,7 @@ import BigNumber from "bignumber.js";
 import StakingModal from "../components/Modals/StakingModal";
 import StakingPlanTable from "../components/Tables/StakingPlanTable";
 import StakingSummary from "../components/StakingSummary";
+import MobileNav from "../components/SidebarMobile/NavAndSidebar";
 
 const TokenLabel = styled.div`
   position: absolute;
@@ -232,6 +233,7 @@ const StakingPage = () => {
 
   return (
     <div>
+      <MobileNav />
       <div className="d-flex justify-content-between">
         <Typography
           color="monoWhite"

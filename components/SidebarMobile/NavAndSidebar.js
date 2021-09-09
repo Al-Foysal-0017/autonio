@@ -229,9 +229,30 @@ const MobileNav = ({ rtlActive, router }) => {
             </div>
           </div>
           <div className="navbarContainerRightItems">
-            <div className="profileInfo">
-              <span>0xc813...ea5e</span>
-            </div>
+            {account ? (
+              <div
+                className="d-flex align-items-center"
+                style={{
+                  background: "#2C323D",
+                  paddingLeft: "15px",
+                  borderRadius: "5px",
+                }}
+              >
+                <Typography color="monoWhite" size={14} weight={600}>
+                  {formatAddress(account)}
+                </Typography>
+                <IconButton aria-label="delete">
+                  <CopyIcon />
+                </IconButton>
+              </div>
+            ) : (
+              <PrimaryButton
+                onClick={() => setOpenWalletModal(true)}
+                className="w-100"
+              >
+                Connect Wallet
+              </PrimaryButton>
+            )}
           </div>
         </div>
       </nav>
@@ -252,10 +273,48 @@ const MobileNav = ({ rtlActive, router }) => {
               color="#fff"
             />
           </div>
+
+          {account && (
+            <div className="text-align-left" style={{ marginTop: "20px" }}>
+              <div className="d-flex align-items-center justify-content-between">
+                <Typography
+                  color="textGrey"
+                  size={12}
+                  weight={400}
+                  className="d-flex align-items-center"
+                >
+                  Plan:
+                  <Typography
+                    color="monoWhite"
+                    size={14}
+                    weight={600}
+                    className="ml-2"
+                  >
+                    {stakingPlans[currentTier].name}
+                  </Typography>
+                </Typography>
+                <DefaultButton
+                  size={12}
+                  weight={600}
+                  background="monoGrey2"
+                  color="monoWhite"
+                  className="px-2 py-1"
+                  onClick={() => nextRouter.push("/staking")}
+                >
+                  upgrade
+                </DefaultButton>
+              </div>
+            </div>
+          )}
+
           <div className="SidebarItems">
             <div className="navbar-first">
-              <Nav navbar>{createLinks(firstRoutes)}</Nav>
-              <Nav navbar>{createLinks(secondRoutes, true)}</Nav>
+              <Nav navbar style={{ cursor: "pointer" }}>
+                {createLinks(firstRoutes)}
+              </Nav>
+              <Nav navbar style={{ cursor: "pointer" }}>
+                {createLinks(secondRoutes, true)}
+              </Nav>
             </div>
           </div>
         </div>
@@ -276,6 +335,7 @@ const MobileNav = ({ rtlActive, router }) => {
           </Nav>
         </div>
       </div>
+      <WalletModal open={openWalletModal} setOpen={setOpenWalletModal} />
     </header>
   );
 };
