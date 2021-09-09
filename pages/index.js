@@ -218,9 +218,25 @@ const OverviewPage = () => {
         <ClaimRewards />
       </OverviewTitleWrapper>
 
-      <div className="py-4">
+      <div className="py-4 ResponsiveScrollBar1">
         <Row>
-          <div style={{ display: "flex", width: "100%" }}>
+          <Col lg={3}>
+            <AvailableCard blockNumber={blockNumber} />
+          </Col>
+          <Col lg={3}>
+            <LockedCard blockNumber={blockNumber} />
+          </Col>
+          <Col lg={3}>
+            <StakingRewardsCard blockNumber={blockNumber} />
+          </Col>
+          <Col lg={3}>
+            <TokenCard blockNumber={blockNumber} />
+          </Col>
+        </Row>
+      </div>
+      <div className="py-4 ResponsiveScrollBar2">
+        <Row>
+          <div style={{ display: "flex", width: "100%", overflowX: "scroll" }}>
             <Col lg={3} style={{ minWidth: "250px" }}>
               <AvailableCard blockNumber={blockNumber} />
             </Col>

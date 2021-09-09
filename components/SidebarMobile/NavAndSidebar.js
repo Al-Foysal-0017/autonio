@@ -267,7 +267,7 @@ const MobileNav = ({ rtlActive, router }) => {
             <div className="mt-6" />
 
             {account && <LogOutMenu />}
-            <div className="px-4">
+            <div>
               <LogoIcon />
               <Typography color="textGrey" size={10} className="mt-4">
                 Version 2.0

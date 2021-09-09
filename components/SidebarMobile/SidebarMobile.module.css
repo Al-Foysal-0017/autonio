@@ -167,3 +167,17 @@
     display: none;
   }
 }
+/* It is for sidebar component */
+@media (max-width: 1024px) {
+  .responsiveSidebar {
+    display: none;
+  }
+  .ResponsiveScrollBar1 {
+    display: none;
+  }
+}
+@media (min-width: 1025px) {
+  .ResponsiveScrollBar2 {
+    display: none;
+  }
+}
